@@ -1,164 +1,66 @@
-# pds/skeleton
+# Estrutura Básica do Projeto PHP
+###### Basic PHP Project Structure
 
-This publication describes a standard filesystem skeleton suitable for all PHP
-packages.
+Este repositorio foi baseado no [pds/skeleton](https://github.com/php-pds/skeleton), onde descreve com base em estudos,
+uma estrutura padrão para projetos e pacotes PHP.
 
-Please see <https://github.com/php-pds/skeleton_research> for background
-information.
+Foi feito alterações a fim de tornar mais rapido subir, testar e estudar novas funcionalidades PHP, por conta disso a 
+estrutura foi modificada, os detalhes das modificações você encontra nesse documento, para mais detalhes consulte 
+a [documentação original](https://github.com/php-pds/skeleton) antes de começar a usar.
 
-Command-line tools for `validating` or `generating` PDS conform packages which are included with this standard are documented [here](./docs/tools.md).
+## Resumo
 
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD",
-"SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this publication are to be
-interpreted as described in [RFC 2119](http://tools.ietf.org/html/rfc2119).
+| Se o projeto tiver uma pasta na raiz para...    | ...então a pasta será nomeada: |
+| ----------------------------------------------- | --------------------------- |
+| executáveis da linha de comando                 | `bin/`                      |
+| arquivos dockerfiles para subir a aplicação     | `docker/`                   |
+| arquivos de configuração                        | `config/`                   |
+| arquivos de documentação                        | `docs/`                     |
+| arquivos do servidor web                        | `public/`                   |
+| outros arquivos de recursos                     | `resources/`                |
+| Código fonte PHP                                | `src/`                      |
+| código de teste                                 | `tests/`                    |
+| pacotes adicionais                              | `vendor/`                   |
 
-## Summary
 
-A package MUST use these names for these root-level directories:
+| Se o projeto tiver um arquivo na raiz para...   | ....então o arquivo será nomeado: |
+| ----------------------------------------------- | --------------------------------- |
+| um log de mudanças entre versões                | `CHANGELOG(.*)`                   |
+| diretrizes para colaboradores                   | `CONTRIBUTING(.*)`                |
+| informações de licenciamento                    | `LICENSE(.*)`                     |
+| informações sobre o próprio pacote ou projeto   | `README(.*)`                      |
+| pacotes requisitos do projeto                   | `composer.json`                   |
 
-| If a package has a root-level directory for ... | ... then it MUST be named: |
-| ----------------------------------------------- | -------------------------- |
-| command-line executables                        | `bin/`                     |
-| configuration files                             | `config/`                  |
-| documentation files                             | `docs/`                    |
-| web server files                                | `public/`                  |
-| other resource files                            | `resources/`               |
-| PHP source code                                 | `src/`                     |
-| test code                                       | `tests/`                   |
+## Alterações do projeto original
 
-A package MUST use these names for these root-level files:
+#### Diretorio "docker"
+O projeto original foi realizado a fim de padronizar o desenvolvimento de novos pacotes PHP 
+pela comunidade, a pasta **docker** foi criada para guardar arquivos relacionados ao Docker e Docker Compose, assim 
+conseguimos subir o ambiente completo para testes, estudos ou novos projetos e temos um bom 
+ponto de partida.
 
-| If a package has a root-level file for ...      | ... then it MUST be named: |
-| ----------------------------------------------- | -------------------------- |
-| a log of changes between releases               | `CHANGELOG(.*)`            |
-| guidelines for contributors                     | `CONTRIBUTING(.*)`         |
-| licensing information                           | `LICENSE(.*)`              |
-| information about the package itself            | `README(.*)`               |
+Dentro do diretorio ja se encontra o ambiente localhost completo e configurado com Nginx, PHP-FPM e PHP7.4.
 
-A package SHOULD include a root-level file indicating the licensing and
-copyright terms of the package contents.
+#### Diretorio "vendor" e arquivo "composer.json"
+Foi adiciona o **composer.json** no projeto já com as configurações do mesmo, assim, agilizando o 
+desenvolvimento com pacotes externos. O diretorio **vendor** é criado automaticamente 
+ao rodar o comando `composer install` ou `composer update`
 
-## Root-Level Directories
+#### Arquivos em "public/"
+Foi adicionado arquivos para a construção do projeto já ter uma base de testes. 
+**public/index.php** carrega o autoload do composer e já é carregado pelo servidor web 
+ao iniciar os serviços com `docker-compose up`. **public/phpinfo.php** para conferir todas 
+as configurações e modulos habilitados na imagem.
 
-### bin/
+## Como usar
 
-If the package provides a root-level directory for command-line executable
-files, it MUST be named `bin/`.
+Existem duas maneiras para usar este templete de projeto PHP.
 
-This publication does not otherwise define the structure and contents of the
-directory.
+A primeira é clonando este repositorio e colocar no root do seu servidor web/php, aponte 
+a pasta publica para **public** e rode o composer para atualizar os pacotes.
 
-### config/
+A segunda é após clonar o repositorio para um servidor com docker e docker compose 
+instalado, entre na pasta docker e rode o build.sh para iniciar os serviços.
 
-If the package provides a root-level directory for configuration files, it MUST
-be named `config/`.
-
-This publication does not otherwise define the structure and contents of the
-directory.
-
-### docs/
-
-If the package provides a root-level directory for documentation files, it MUST
-be named `docs/`.
-
-This publication does not otherwise define the structure and contents of the
-directory.
-
-### public/
-
-If the package provides a root-level directory for web server files, it MUST be
-named `public/`.
-
-This publication does not otherwise define the structure and contents of the
-directory.
-
-> N.b.: This directory MAY be intended as a web server document root.
-> Alternatively, it MAY be that the files will be served dynamically via other
-> code, copied or symlinked to the "real" document root, or otherwise managed so
-> that they become publicly available on the web.
-
-### resources/
-
-If the package provides a root-level directory for other resource files, it MUST
-be named `resources/`.
-
-This publication does not otherwise define the structure and contents of the
-directory.
-
-### src/
-
-If the package provides a root-level directory for PHP source code files, it
-MUST be named `src/`.
-
-This publication does not otherwise define the structure and contents of the
-directory.
-
-### tests/
-
-If the package provides a root-level directory for test files, it MUST be named
-`tests/`.
-
-This publication does not otherwise define the structure and contents of the
-directory.
-
-### Other Directories
-
-The package MAY contain other root-level directories for purposes not described
-by this publication.
-
-This publication does not define the structure and contents of the other
-root-level directories.
-
-## Root-Level Files
-
-### CHANGELOG
-
-If the package provides a root-level file with a list of changes since the last
-release or version, it MUST be named `CHANGELOG`.
-
-It MAY have a lowercase filename extension indicating the file format.
-
-This publication does not otherwise define the structure and contents of the
-file.
-
-### CONTRIBUTING
-
-If the package provides a root-level file that describes how to contribute to
-the package, it MUST be named `CONTRIBUTING`.
-
-It MAY have a lowercase filename extension indicating the file format.
-
-This publication does not otherwise define the structure and contents of the
-file.
-
-### LICENSE
-
-Whereas package consumers might be in violation of copyright law when copying
-unlicensed intellectual property, the package SHOULD include a root-level file
-indicating the licensing and copyright terms of the package contents.
-
-If the package provides a root-level file indicating the licensing and copyright
-terms of the package contents, it MUST be named `LICENSE`.
-
-It MAY have a lowercase filename extension indicating the file format.
-
-This publication does not otherwise define the structure and contents of the
-file.
-
-### README
-
-If the package provides a root-level file with information about the package
-itself, it MUST be named `README`.
-
-It MAY have a lowercase filename extension indicating the file format.
-
-This publication does not otherwise define the structure and contents of the
-file.
-
-### Other Files
-
-The package MAY contain other root-level files for purposes not described in
-this publication.
-
-This publication does not define the structure and contents of the other
-root-level files.
+Todos os arquivos estão ao maximo simplificado e comentados, você tem total liberdade para
+alterar conforme sua necessidade.
